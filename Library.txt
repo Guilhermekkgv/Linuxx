@@ -63,15 +63,46 @@ function Linux:CreateWindow(title, subtitle)
     titleBar.Parent = mainFrame
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, -10, 1, 0)
+    titleLabel.Size = UDim2.new(0, 0, 1, 0)
     titleLabel.Position = UDim2.new(0, 5, 0, 0)
     titleLabel.BackgroundTransparency = 1
-    titleLabel.Text = title .. " " .. subtitle
+    titleLabel.Text = title
     titleLabel.TextColor3 = Theme.Text
     titleLabel.Font = Enum.Font.GothamBold
     titleLabel.TextSize = 18
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = titleBar
+    titleLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
+        titleLabel.Size = UDim2.new(0, titleLabel.TextBounds.X, 1, 0)
+    end)
+
+    local subtitleLabel = Instance.new("TextLabel")
+    subtitleLabel.Size = UDim2.new(0, 0, 1, 0)
+    subtitleLabel.Position = UDim2.new(0, titleLabel.Size.X.Offset + 10, 0, 0)
+    subtitleLabel.BackgroundTransparency = 1
+    subtitleLabel.Text = subtitle
+    subtitleLabel.TextColor3 = Color3.fromRGB(100, 100, 100)
+    subtitleLabel.Font = Enum.Font.GothamBold
+    subtitleLabel.TextSize = 18
+    subtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    subtitleLabel.Parent = titleBar
+    subtitleLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
+        subtitleLabel.Size = UDim2.new(0, subtitleLabel.TextBounds.X, 1, 0)
+        subtitleLabel.Position = UDim2.new(0, titleLabel.Size.X.Offset + 10, 0, 0)
+    end)
+
+    local closeButton = Instance.new("TextButton")
+    closeButton.Size = UDim2.new(0, 20, 0, 20)
+    closeButton.Position = UDim2.new(1, -25, 0, 10)
+    closeButton.BackgroundTransparency = 1
+    closeButton.Text = "X"
+    closeButton.TextColor3 = Theme.Text
+    closeButton.Font = Enum.Font.GothamBold
+    closeButton.TextSize = 18
+    closeButton.Parent = titleBar
+    closeButton.MouseButton1Click:Connect(function()
+        screenGui:Destroy()
+    end)
 
     local tabList = Instance.new("ScrollingFrame")
     tabList.Size = UDim2.new(0, 140, 1, -40)
@@ -229,14 +260,12 @@ function Linux:CreateWindow(title, subtitle)
             label.TextXAlignment = Enum.TextXAlignment.Left
             label.Parent = dropdown
 
-            local arrow = Instance.new("TextLabel")
+            local arrow = Instance.new("ImageLabel")
             arrow.Size = UDim2.new(0, 20, 0, 20)
             arrow.Position = UDim2.new(1, -30, 0, 10)
             arrow.BackgroundTransparency = 1
-            arrow.Text = "▼"
-            arrow.TextColor3 = Theme.SubText
-            arrow.Font = Enum.Font.Gotham
-            arrow.TextSize = 14
+            arrow.Image = "rbxassetid://10709790948" -- lucide-chevron-down
+            arrow.ImageColor3 = Theme.SubText
             arrow.Parent = dropdown
 
             local dropdownFrame = Instance.new("Frame")
@@ -275,6 +304,7 @@ function Linux:CreateWindow(title, subtitle)
                         label.Text = config.Title .. ": " .. value
                         isOpen = false
                         TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)}):Play()
+                        TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play()
                         task.delay(0.3, function() dropdownFrame.Visible = false end)
                         onChanged(value)
                     end)
@@ -288,8 +318,10 @@ function Linux:CreateWindow(title, subtitle)
                 if isOpen then
                     dropdownFrame.Visible = true
                     TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, #values * 27)}):Play()
+                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709791523"}):Play() -- lucide-chevron-up
                 else
                     TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)}):Play()
+                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play() -- lucide-chevron-down
                     task.delay(0.3, function() dropdownFrame.Visible = false end)
                 end
             end)
