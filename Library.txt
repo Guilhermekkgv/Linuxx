@@ -338,8 +338,10 @@ function Linux:MakeWindow(WindowConfig)
     WindowConfig.HidePremium = WindowConfig.HidePremium or false
     WindowConfig.ShowIcon = WindowConfig.ShowIcon or false
     WindowConfig.Icon = WindowConfig.Icon or "rbxassetid://8834748103"
+    WindowConfig.Theme = WindowConfig.Theme or "Default"
     Linux.Folder = WindowConfig.ConfigFolder
     Linux.SaveCfg = WindowConfig.SaveConfig
+    Linux.SelectedTheme = WindowConfig.Theme
 
     if WindowConfig.SaveConfig and not isfolder(WindowConfig.ConfigFolder) then
         makefolder(WindowConfig.ConfigFolder)
@@ -567,13 +569,7 @@ function Linux:MakeWindow(WindowConfig)
                 Position = UDim2.new(0, 35, 0, 0),
                 TextTransparency = 0.4,
                 Name = "Title"
-            }), "Text"),
-            SetProps(MakeElement("Frame"), {
-                Size = UDim2.new(1, 0, 1, 0),
-                BackgroundTransparency = 1,
-                BackgroundColor3 = Color3.fromRGB(66, 135, 245),
-                Name = "Highlight"
-            })
+            }), "Text")
         })
 
         if GetIcon(TabConfig.Icon) then
@@ -600,7 +596,6 @@ function Linux:MakeWindow(WindowConfig)
             TabFrame.Ico.ImageTransparency = 0
             TabFrame.Title.TextTransparency = 0
             TabFrame.Title.Font = Enum.Font.GothamBlack
-            TabFrame.Highlight.BackgroundTransparency = 0
             Container.Visible = true
         end
 
@@ -610,7 +605,6 @@ function Linux:MakeWindow(WindowConfig)
                     Tab.Title.Font = Enum.Font.GothamSemibold
                     TweenService:Create(Tab.Ico, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0.4}):Play()
                     TweenService:Create(Tab.Title, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {TextTransparency = 0.4}):Play()
-                    TweenService:Create(Tab.Highlight, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
                 end
             end
             for _, ItemContainer in pairs(MainWindow:GetChildren()) do
@@ -620,7 +614,6 @@ function Linux:MakeWindow(WindowConfig)
             end
             TweenService:Create(TabFrame.Ico, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {ImageTransparency = 0}):Play()
             TweenService:Create(TabFrame.Title, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
-            TweenService:Create(TabFrame.Highlight, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
             TabFrame.Title.Font = Enum.Font.GothamBlack
             Container.Visible = true
         end)
@@ -675,11 +668,6 @@ function Linux:MakeWindow(WindowConfig)
 
                 AddConnection(Click.MouseButton1Down, function()
                     TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(Linux.Themes[Linux.SelectedTheme].Second.R * 255 + 6, Linux.Themes[Linux.SelectedTheme].Second.G * 255 + 6, Linux.Themes[Linux.SelectedTheme].Second.B * 255 + 6)}):Play()
-                end)
-
-                AddConnection(Click.TouchTap, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(Linux.Themes[Linux.SelectedTheme].Second.R * 255 + 3, Linux.Themes[Linux.SelectedTheme].Second.G * 255 + 3, Linux.Themes[Linux.SelectedTheme].Second.B * 255 + 3)}):Play()
-                    task.spawn(ButtonConfig.Callback)
                 end)
 
                 function Button:Set(ButtonText)
@@ -761,12 +749,6 @@ function Linux:MakeWindow(WindowConfig)
 
                 AddConnection(Click.MouseButton1Down, function()
                     TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(Linux.Themes[Linux.SelectedTheme].Second.R * 255 + 6, Linux.Themes[Linux.SelectedTheme].Second.G * 255 + 6, Linux.Themes[Linux.SelectedTheme].Second.B * 255 + 6)}):Play()
-                end)
-
-                AddConnection(Click.TouchTap, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(Linux.Themes[Linux.SelectedTheme].Second.R * 255 + 3, Linux.Themes[Linux.SelectedTheme].Second.G * 255 + 3, Linux.Themes[Linux.SelectedTheme].Second.B * 255 + 3)}):Play()
-                    SaveCfg(game.GameId)
-                    Toggle:Set(not Toggle.Value)
                 end)
 
                 if ToggleConfig.Flag then
@@ -999,11 +981,6 @@ function Linux:MakeWindow(WindowConfig)
                             SaveCfg(game.GameId)
                         end)
 
-                        AddConnection(OptionBtn.TouchTap, function()
-                            Dropdown:Set(Option)
-                            SaveCfg(game.GameId)
-                        end)
-
                         Dropdown.Buttons[Option] = OptionBtn
                     end
                 end
@@ -1044,17 +1021,6 @@ function Linux:MakeWindow(WindowConfig)
                 end
 
                 AddConnection(Click.MouseButton1Click, function()
-                    Dropdown.Toggled = not Dropdown.Toggled
-                    DropdownFrame.F.Line.Visible = Dropdown.Toggled
-                    TweenService:Create(DropdownFrame.F.Ico, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Rotation = Dropdown.Toggled and 180 or 0}):Play()
-                    if #Dropdown.Options > MaxElements then
-                        TweenService:Create(DropdownFrame, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = Dropdown.Toggled and UDim2.new(1, 0, 0, 38 + (MaxElements * 28)) or UDim2.new(1, 0, 0, 38)}):Play()
-                    else
-                        TweenService:Create(DropdownFrame, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = Dropdown.Toggled and UDim2.new(1, 0, 0, DropdownList.AbsoluteContentSize.Y + 38) or UDim2.new(1, 0, 0, 38)}):Play()
-                    end
-                end)
-
-                AddConnection(Click.TouchTap, function()
                     Dropdown.Toggled = not Dropdown.Toggled
                     DropdownFrame.F.Line.Visible = Dropdown.Toggled
                     TweenService:Create(DropdownFrame.F.Ico, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Rotation = Dropdown.Toggled and 180 or 0}):Play()
@@ -1151,11 +1117,6 @@ function Linux:MakeWindow(WindowConfig)
 
                 AddConnection(Click.MouseButton1Down, function()
                     TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(Linux.Themes[Linux.SelectedTheme].Second.R * 255 + 6, Linux.Themes[Linux.SelectedTheme].Second.G * 255 + 6, Linux.Themes[Linux.SelectedTheme].Second.B * 255 + 6)}):Play()
-                end)
-
-                AddConnection(Click.TouchTap, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(Linux.Themes[Linux.SelectedTheme].Second.R * 255 + 3, Linux.Themes[Linux.SelectedTheme].Second.G * 255 + 3, Linux.Themes[Linux.SelectedTheme].Second.B * 255 + 3)}):Play()
-                    TextboxActual:CaptureFocus()
                 end)
             end
             return ElementFunction
