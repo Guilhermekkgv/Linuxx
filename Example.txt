@@ -1,0 +1,62 @@
+local Linux = loadstring(game:HttpGet("URL_DA_TUA_LIB_AQUI"))()
+
+local Window = Linux:MakeWindow({
+    Name = "Linux",
+    ConfigFolder = "LinuxConfigs",
+    SaveConfig = true,
+    IntroEnabled = true,
+    IntroText = "Linux",
+    IntroIcon = "rbxassetid://4483345998",
+    ShowIcon = true,
+    Icon = "rbxassetid://4483345998",
+    CloseCallback = function() end
+})
+
+Linux:Init()
+
+local Tab1 = Window:MakeTab({
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+Tab1:AddButton({
+    Name = "Button",
+    Callback = function() end
+})
+
+Tab1:AddToggle({
+    Name = "Toggle",
+    Default = false,
+    Flag = "ToggleFlag",
+    Save = true,
+    Callback = function(Value) end
+})
+
+Tab1:AddSlider({
+    Name = "Slider",
+    Min = 0,
+    Max = 100,
+    Increment = 1,
+    Default = 50,
+    ValueName = "units",
+    Flag = "SliderFlag",
+    Save = true,
+    Callback = function(Value) end
+})
+
+Tab1:AddDropdown({
+    Name = "Dropdown",
+    Options = {"Option1", "Option2", "Option3"},
+    Default = "Option1",
+    Flag = "DropdownFlag",
+    Save = true,
+    Callback = function(Value) end
+})
+
+Tab1:AddTextbox({
+    Name = "Textbox",
+    Default = "Text",
+    TextDisappear = true,
+    Callback = function(Value) end
+})
