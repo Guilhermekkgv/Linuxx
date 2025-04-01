@@ -1,6 +1,7 @@
 local Linux = {}
 
 local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
@@ -9,125 +10,88 @@ screenGui.Parent = game.CoreGui
 screenGui.ResetOnSpawn = false
 
 local Theme = {
-    Name = "Dark",
-    Accent = Color3.fromRGB(50, 100, 150),
-    Main = Color3.fromRGB(15, 15, 15),
-    Border = Color3.fromRGB(60, 60, 60),
-    TitleBar = Color3.fromRGB(25, 25, 25),
-    Tab = Color3.fromRGB(35, 35, 35),
-    TabSelected = Color3.fromRGB(50, 100, 150),
-    Element = Color3.fromRGB(40, 40, 40),
-    ElementBorder = Color3.fromRGB(20, 20, 20),
-    InElementBorder = Color3.fromRGB(70, 70, 70),
-    ElementTransparency = 0,
-    ToggleSlider = Color3.fromRGB(30, 30, 30),
-    ToggleToggled = Color3.fromRGB(50, 100, 150),
-    SliderRail = Color3.fromRGB(50, 50, 50),
-    DropdownComponent = Color3.fromRGB(45, 45, 45),
-    Input = Color3.fromRGB(60, 60, 60),
-    InputFocused = Color3.fromRGB(20, 20, 20),
-    InputIndicator = Color3.fromRGB(120, 120, 120),
-    Text = Color3.fromRGB(220, 220, 220),
-    SubText = Color3.fromRGB(170, 170, 170),
-    Shadow = Color3.fromRGB(0, 0, 0)
+    Accent = Color3.fromRGB(40, 80, 120),
+    Main = Color3.fromRGB(20, 20, 20),
+    Border = Color3.fromRGB(50, 50, 50),
+    TitleBar = Color3.fromRGB(30, 30, 30),
+    Tab = Color3.fromRGB(40, 40, 40),
+    Element = Color3.fromRGB(45, 45, 45),
+    ElementHover = Color3.fromRGB(55, 55, 55),
+    DropdownComponent = Color3.fromRGB(35, 35, 35),
+    Text = Color3.fromRGB(200, 200, 200),
+    SubText = Color3.fromRGB(150, 150, 150),
+    ToggleSlider = Color3.fromRGB(60, 60, 60),
+    ToggleToggled = Color3.fromRGB(40, 80, 120),
+    SliderRail = Color3.fromRGB(60, 60, 60),
+    Input = Color3.fromRGB(50, 50, 50)
 }
 
 function Linux:CreateWindow(title)
     local window = {}
     local mainFrame = Instance.new("Frame")
-    mainFrame.Size = UDim2.new(0, 580, 0, 360)
-    mainFrame.Position = UDim2.new(0.5, -290, 0.5, -180)
+    mainFrame.Size = UDim2.new(0, 600, 0, 400)
+    mainFrame.Position = UDim2.new(0.5, -300, 0.5, -200)
     mainFrame.BackgroundColor3 = Theme.Main
     mainFrame.BorderSizePixel = 0
     mainFrame.ClipsDescendants = true
-    mainFrame.Active = true
-    mainFrame.Draggable = true
     mainFrame.Parent = screenGui
 
-    local glow = Instance.new("UIStroke")
-    glow.Thickness = 1
-    glow.Color = Theme.Border
-    glow.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    glow.Parent = mainFrame
-
-    local shadow = Instance.new("ImageLabel")
-    shadow.Size = UDim2.new(1, 20, 1, 20)
-    shadow.Position = UDim2.new(0, -10, 0, -10)
-    shadow.BackgroundTransparency = 1
-    shadow.Image = "rbxassetid://1316045217"
-    shadow.ImageColor3 = Theme.Shadow
-    shadow.ImageTransparency = 0.7
-    shadow.ScaleType = Enum.ScaleType.Slice
-    shadow.SliceCenter = Rect.new(10, 10, 118, 118)
-    shadow.Parent = mainFrame
+    local uiCorner = Instance.new("UICorner")
+    uiCorner.CornerRadius = UDim.new(0, 6)
+    uiCorner.Parent = mainFrame
 
     local titleBar = Instance.new("Frame")
-    titleBar.Size = UDim2.new(1, 0, 0, 40)
+    titleBar.Size = UDim2.new(1, 0, 0, 30)
     titleBar.BackgroundColor3 = Theme.TitleBar
     titleBar.BorderSizePixel = 0
     titleBar.Parent = mainFrame
 
-    local titleGradient = Instance.new("UIGradient")
-    titleGradient.Color = ColorSequence.new(Theme.TitleBar, Theme.Accent)
-    titleGradient.Rotation = 45
-    titleGradient.Parent = titleBar
+    local titleCorner = Instance.new("UICorner")
+    titleCorner.CornerRadius = UDim.new(0, 6)
+    titleCorner.Parent = titleBar
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(1, -30, 1, 0)
-    titleLabel.Position = UDim2.new(0, 5, 0, 0)
+    titleLabel.Size = UDim2.new(1, -40, 1, 0)
+    titleLabel.Position = UDim2.new(0, 10, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Text = title
     titleLabel.TextColor3 = Theme.Text
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.TextSize = 18
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.TextSize = 16
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = titleBar
 
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 20, 0, 20)
-    closeButton.Position = UDim2.new(1, -25, 0, 10)
+    closeButton.Position = UDim2.new(1, -25, 0, 5)
     closeButton.BackgroundTransparency = 1
-    closeButton.Text = "X"
+    closeButton.Text = "×"
     closeButton.TextColor3 = Theme.Text
-    closeButton.Font = Enum.Font.GothamBold
-    closeButton.TextSize = 18
+    closeButton.Font = Enum.Font.SourceSansBold
+    closeButton.TextSize = 20
     closeButton.Parent = titleBar
     closeButton.MouseButton1Click:Connect(function()
         screenGui:Destroy()
     end)
 
     local tabList = Instance.new("ScrollingFrame")
-    tabList.Size = UDim2.new(0, 140, 1, -40)
-    tabList.Position = UDim2.new(0, 0, 0, 40)
-    tabList.BackgroundColor3 = Theme.ElementBorder
+    tabList.Size = UDim2.new(0, 150, 1, -30)
+    tabList.Position = UDim2.new(0, 0, 0, 30)
+    tabList.BackgroundColor3 = Theme.Main
     tabList.BorderSizePixel = 0
     tabList.CanvasSize = UDim2.new(0, 0, 0, 0)
     tabList.ScrollBarThickness = 0
     tabList.Parent = mainFrame
 
-    local tabContent = Instance.new("ScrollingFrame")
-    tabContent.Size = UDim2.new(1, -140, 1, -40)
-    tabContent.Position = UDim2.new(0, 140, 0, 40)
-    tabContent.BackgroundTransparency = 1
-    tabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-    tabContent.ScrollBarThickness = 4
-    tabContent.ScrollBarImageColor3 = Theme.Accent
-    tabContent.Parent = mainFrame
-
-    local tabTitleLabel = Instance.new("TextLabel")
-    tabTitleLabel.Size = UDim2.new(1, -20, 0, 30)
-    tabTitleLabel.Position = UDim2.new(0, 10, 0, 0)
-    tabTitleLabel.BackgroundTransparency = 1
-    tabTitleLabel.Text = ""
-    tabTitleLabel.TextColor3 = Theme.Text
-    tabTitleLabel.Font = Enum.Font.GothamBold
-    tabTitleLabel.TextSize = 20
-    tabTitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    tabTitleLabel.Parent = tabContent
-
     local tabLayout = Instance.new("UIListLayout")
     tabLayout.Padding = UDim.new(0, 5)
     tabLayout.Parent = tabList
+
+    local tabContent = Instance.new("Frame")
+    tabContent.Size = UDim2.new(1, -150, 1, -30)
+    tabContent.Position = UDim2.new(0, 150, 0, 30)
+    tabContent.BackgroundTransparency = 1
+    tabContent.Parent = mainFrame
 
     local tabs = {}
     local currentTab = nil
@@ -140,43 +104,37 @@ function Linux:CreateWindow(title)
         tabButton.Text = ""
         tabButton.Parent = tabList
 
-        local tabGradient = Instance.new("UIGradient")
-        tabGradient.Color = ColorSequence.new(Theme.Tab, Theme.TabSelected)
-        tabGradient.Rotation = 90
-        tabGradient.Enabled = false
-        tabGradient.Parent = tabButton
-
-        local tabStroke = Instance.new("UIStroke")
-        tabStroke.Thickness = 1
-        tabStroke.Color = Theme.InElementBorder
-        tabStroke.Transparency = 0.8
-        tabStroke.Parent = tabButton
+        local tabCorner = Instance.new("UICorner")
+        tabCorner.CornerRadius = UDim.new(0, 4)
+        tabCorner.Parent = tabButton
 
         if iconId then
             local icon = Instance.new("ImageLabel")
             icon.Size = UDim2.new(0, 20, 0, 20)
-            icon.Position = UDim2.new(0, 5, 0, 10)
+            icon.Position = UDim2.new(0, 10, 0, 10)
             icon.BackgroundTransparency = 1
             icon.Image = "rbxassetid://" .. tostring(iconId)
-            icon.ImageColor3 = Theme.SubText
             icon.Parent = tabButton
         end
 
         local tabLabel = Instance.new("TextLabel")
-        tabLabel.Size = UDim2.new(1, iconId and -30 or -5, 1, 0)
-        tabLabel.Position = UDim2.new(0, iconId and 30 or 5, 0, 0)
+        tabLabel.Size = UDim2.new(1, iconId and -40 or -10, 1, 0)
+        tabLabel.Position = UDim2.new(0, iconId and 40 or 10, 0, 0)
         tabLabel.BackgroundTransparency = 1
         tabLabel.Text = tabName
         tabLabel.TextColor3 = Theme.SubText
-        tabLabel.Font = Enum.Font.Gotham
+        tabLabel.Font = Enum.Font.SourceSansSemibold
         tabLabel.TextSize = 16
         tabLabel.TextXAlignment = Enum.TextXAlignment.Left
         tabLabel.Parent = tabButton
 
-        local tabFrame = Instance.new("Frame")
-        tabFrame.Size = UDim2.new(1, 0, 1, -30)
-        tabFrame.Position = UDim2.new(0, 0, 0, 30)
+        local tabFrame = Instance.new("ScrollingFrame")
+        tabFrame.Size = UDim2.new(1, -10, 1, -10)
+        tabFrame.Position = UDim2.new(0, 5, 0, 5)
         tabFrame.BackgroundTransparency = 1
+        tabFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+        tabFrame.ScrollBarThickness = 4
+        tabFrame.ScrollBarImageColor3 = Theme.SubText
         tabFrame.Visible = false
         tabFrame.Parent = tabContent
 
@@ -187,107 +145,79 @@ function Linux:CreateWindow(title)
         tabButton.MouseButton1Click:Connect(function()
             if currentTab then
                 currentTab.Visible = false
-                tabs[currentTab].Gradient.Enabled = false
                 tabs[currentTab].Button.BackgroundColor3 = Theme.Tab
             end
             tabFrame.Visible = true
-            tabButton.BackgroundColor3 = Theme.TabSelected
-            tabGradient.Enabled = true
+            tabButton.BackgroundColor3 = Theme.Accent
             currentTab = tabFrame
-            tabTitleLabel.Text = tabName
-            tabContent.CanvasSize = UDIM2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 30)
-            TweenService:Create(tabButton, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
-        end)
-
-        tabButton.MouseEnter:Connect(function()
-            if currentTab ~= tabFrame then
-                TweenService:Create(tabButton, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0.2}):Play()
-            end
-        end)
-
-        tabButton.MouseLeave:Connect(function()
-            if currentTab ~= tabFrame then
-                TweenService:Create(tabButton, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
-            end
+            tabFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y)
         end)
 
         contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-            tabContent.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 30)
+            tabFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y)
         end)
 
-        tabs[tabFrame] = {Button = tabButton, Gradient = tabGradient}
+        tabs[tabFrame] = {Button = tabButton}
         table.insert(tabs, tabFrame)
-        tabList.CanvasSize = UDim2.new(0, 0, 0, tabLayout.AbsoluteContentSize.Y)
+        tabList.CanvasSize = UDim2.new(0, 0, 0, tabLayout.AbsoluteContentSize.Y + 10)
         if #tabs == 1 then
             tabFrame.Visible = true
-            tabButton.BackgroundColor3 = Theme.TabSelected
-            tabGradient.Enabled = true
+            tabButton.BackgroundColor3 = Theme.Accent
             currentTab = tabFrame
-            tabTitleLabel.Text = tabName
-            tabContent.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 30)
         end
 
         function tab:AddSection(title)
             local sectionFrame = Instance.new("Frame")
-            sectionFrame.Size = UDim2.new(1, -20, 0, 25)
+            sectionFrame.Size = UDim2.new(1, 0, 0, 30)
             sectionFrame.BackgroundTransparency = 1
             sectionFrame.Parent = tabFrame
 
             local sectionLabel = Instance.new("TextLabel")
-            sectionLabel.Size = UDim2.new(1, 0, 1, 0)
+            sectionLabel.Size = UDim2.new(1, -10, 1, 0)
+            sectionLabel.Position = UDim2.new(0, 5, 0, 0)
             sectionLabel.BackgroundTransparency = 1
             sectionLabel.Text = title
             sectionLabel.TextColor3 = Theme.SubText
-            sectionLabel.Font = Enum.Font.GothamBold
-            sectionLabel.TextSize = 14
+            sectionLabel.Font = Enum.Font.SourceSansBold
+            sectionLabel.TextSize = 16
             sectionLabel.TextXAlignment = Enum.TextXAlignment.Left
             sectionLabel.Parent = sectionFrame
         end
 
         function tab:AddButton(config)
             local button = Instance.new("TextButton")
-            button.Size = UDim2.new(1, -20, 0, 40)
+            button.Size = UDim2.new(1, 0, 0, 36)
             button.BackgroundColor3 = Theme.Element
             button.Text = config.Title
             button.TextColor3 = Theme.Text
-            button.Font = Enum.Font.Gotham
+            button.Font = Enum.Font.SourceSansSemibold
             button.TextSize = 16
             button.Parent = tabFrame
 
-            local buttonGradient = Instance.new("UIGradient")
-            buttonGradient.Color = ColorSequence.new(Theme.Element, Theme.Accent)
-            buttonGradient.Rotation = 45
-            buttonGradient.Transparency = NumberSequence.new(0.9, 0.9)
-            buttonGradient.Parent = button
-
-            local buttonStroke = Instance.new("UIStroke")
-            buttonStroke.Thickness = 1
-            buttonStroke.Color = Theme.InElementBorder
-            buttonStroke.Transparency = 0.5
-            buttonStroke.Parent = button
-
-            button.MouseButton1Click:Connect(function()
-                if config.Callback then config.Callback() end
-                TweenService:Create(buttonGradient, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Transparency = NumberSequence.new(0, 0)}):Play()
-                task.delay(0.3, function()
-                    TweenService:Create(buttonGradient, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Transparency = NumberSequence.new(0.9, 0.9)}):Play()
-                end)
-            end)
+            local btnCorner = Instance.new("UICorner")
+            btnCorner.CornerRadius = UDim.new(0, 4)
+            btnCorner.Parent = button
 
             button.MouseEnter:Connect(function()
-                TweenService:Create(button, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0.1}):Play()
+                TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Theme.ElementHover}):Play()
             end)
-
             button.MouseLeave:Connect(function()
-                TweenService:Create(button, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
+                TweenService:Create(button, TweenInfo.new(0.2), {BackgroundColor3 = Theme.Element}):Play()
+            end)
+            button.MouseButton1Click:Connect(function()
+                if config.Callback then config.Callback() end
             end)
         end
 
         function tab:AddDropdown(id, config)
             local dropdown = Instance.new("Frame")
-            dropdown.Size = UDim2.new(1, -20, 0, 40)
+            dropdown.Size = UDim2.new(1, 0, 0, 36)
             dropdown.BackgroundColor3 = Theme.DropdownComponent
             dropdown.Parent = tabFrame
+
+            local dropCorner = Instance.new("UICorner")
+            dropCorner.CornerRadius = UDim.new(0, 4)
+            dropCorner.Parent = dropdown
 
             local button = Instance.new("TextButton")
             button.Size = UDim2.new(1, 0, 1, 0)
@@ -295,44 +225,38 @@ function Linux:CreateWindow(title)
             button.Text = ""
             button.Parent = dropdown
 
-            local dropdownStroke = Instance.new("UIStroke")
-            dropdownStroke.Thickness = 1
-            dropdownStroke.Color = Theme.InElementBorder
-            dropdownStroke.Transparency = 0.5
-            dropdownStroke.Parent = dropdown
-
             local label = Instance.new("TextLabel")
             label.Size = UDim2.new(1, -40, 1, 0)
             label.Position = UDim2.new(0, 10, 0, 0)
             label.BackgroundTransparency = 1
             label.Text = config.Title .. ": " .. (config.Default or "None")
             label.TextColor3 = Theme.Text
-            label.Font = Enum.Font.Gotham
+            label.Font = Enum.Font.SourceSansSemibold
             label.TextSize = 16
             label.TextXAlignment = Enum.TextXAlignment.Left
+            label.TextTruncate = Enum.TextTruncate.AtEnd
             label.Parent = dropdown
 
             local arrow = Instance.new("ImageLabel")
-            arrow.Size = UDim2.new(0, 20, 0, 20)
-            arrow.Position = UDim2.new(1, -30, 0, 10)
+            arrow.Size = UDim2.new(0, 16, 0, 16)
+            arrow.Position = UDim2.new(1, -25, 0, 10)
             arrow.BackgroundTransparency = 1
-            arrow.Image = "rbxassetid://10709790948"
+            arrow.Image = "rbxassetid://10709790948" -- chevron-down
             arrow.ImageColor3 = Theme.SubText
             arrow.Parent = dropdown
 
             local dropdownFrame = Instance.new("Frame")
-            dropdownFrame.Size = UDim2.new(1, -20, 0, 0)
-            dropdownFrame.Position = UDim2.new(0, 10, 1, 0)
+            dropdownFrame.Size = UDim2.new(1, 0, 0, 0)
+            dropdownFrame.Position = UDim2.new(0, 0, 1, 5)
             dropdownFrame.BackgroundColor3 = Theme.DropdownComponent
+            dropdownFrame.BorderSizePixel = 0
             dropdownFrame.ClipsDescendants = true
             dropdownFrame.Visible = false
-            dropdownFrame.Parent = tabFrame
+            dropdownFrame.Parent = dropdown -- Agora filho do dropdown, não do tabFrame
 
-            local dropdownStrokeFrame = Instance.new("UIStroke")
-            dropdownStrokeFrame.Thickness = 1
-            dropdownStrokeFrame.Color = Theme.InElementBorder
-            dropdownStrokeFrame.Transparency = 0.5
-            dropdownStrokeFrame.Parent = dropdownFrame
+            local dropFrameCorner = Instance.new("UICorner")
+            dropFrameCorner.CornerRadius = UDim.new(0, 4)
+            dropFrameCorner.Parent = dropdownFrame
 
             local dropdownLayout = Instance.new("UIListLayout")
             dropdownLayout.Padding = UDim.new(0, 2)
@@ -349,24 +273,27 @@ function Linux:CreateWindow(title)
                 end
                 for i, value in pairs(values) do
                     local option = Instance.new("TextButton")
-                    option.Size = UDim2.new(1, 0, 0, 25)
+                    option.Size = UDim2.new(1, 0, 0, 30)
                     option.BackgroundColor3 = Theme.DropdownComponent
                     option.Text = value
                     option.TextColor3 = Theme.Text
-                    option.Font = Enum.Font.Gotham
+                    option.Font = Enum.Font.SourceSansSemibold
                     option.TextSize = 14
                     option.Parent = dropdownFrame
 
+                    option.MouseEnter:Connect(function()
+                        TweenService:Create(option, TweenInfo.new(0.2), {BackgroundColor3 = Theme.ElementHover}):Play()
+                    end)
+                    option.MouseLeave:Connect(function()
+                        TweenService:Create(option, TweenInfo.new(0.2), {BackgroundColor3 = Theme.DropdownComponent}):Play()
+                    end)
                     option.MouseButton1Click:Connect(function()
                         selectedValue = value
                         label.Text = config.Title .. ": " .. value
                         isOpen = false
-                        local tweenClose = TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)})
-                        tweenClose:Play()
-                        TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play()
-                        tweenClose.Completed:Connect(function()
-                            dropdownFrame.Visible = false
-                        end)
+                        TweenService:Create(dropdownFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, 0)}):Play()
+                        TweenService:Create(arrow, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Image = "rbxassetid://10709790948"}):Play()
+                        task.delay(0.2, function() dropdownFrame.Visible = false end)
                         onChanged(value)
                     end)
                 end
@@ -378,24 +305,13 @@ function Linux:CreateWindow(title)
                 isOpen = not isOpen
                 if isOpen then
                     dropdownFrame.Visible = true
-                    TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, #values * 27)}):Play()
-                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709791523"}):Play()
+                    TweenService:Create(dropdownFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, #values * 32)}):Play()
+                    TweenService:Create(arrow, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Image = "rbxassetid://10709791523"}):Play()
                 else
-                    local tweenClose = TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)})
-                    tweenClose:Play()
-                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play()
-                    tweenClose.Completed:Connect(function()
-                        dropdownFrame.Visible = false
-                    end)
+                    TweenService:Create(dropdownFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, 0)}):Play()
+                    TweenService:Create(arrow, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Image = "rbxassetid://10709790948"}):Play()
+                    task.delay(0.2, function() dropdownFrame.Visible = false end)
                 end
-            end)
-
-            button.MouseEnter:Connect(function()
-                TweenService:Create(dropdown, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0.1}):Play()
-            end)
-
-            button.MouseLeave:Connect(function()
-                TweenService:Create(dropdown, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
             end)
 
             return {
@@ -403,7 +319,7 @@ function Linux:CreateWindow(title)
                     values = newValues
                     updateDropdownFrame()
                     if isOpen then
-                        dropdownFrame.Size = UDim2.new(1, -20, 0, #values * 27)
+                        TweenService:Create(dropdownFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Size = UDim2.new(1, 0, 0, #values * 32)}):Play()
                     end
                 end,
                 SetValue = function(value)
@@ -416,15 +332,13 @@ function Linux:CreateWindow(title)
 
         function tab:AddToggle(id, config)
             local toggle = Instance.new("Frame")
-            toggle.Size = UDim2.new(1, -20, 0, 40)
+            toggle.Size = UDim2.new(1, 0, 0, 36)
             toggle.BackgroundColor3 = Theme.Element
             toggle.Parent = tabFrame
 
-            local toggleStroke = Instance.new("UIStroke")
-            toggleStroke.Thickness = 1
-            toggleStroke.Color = Theme.InElementBorder
-            toggleStroke.Transparency = 0.5
-            toggleStroke.Parent = toggle
+            local togCorner = Instance.new("UICorner")
+            togCorner.CornerRadius = UDim.new(0, 4)
+            togCorner.Parent = toggle
 
             local button = Instance.new("TextButton")
             button.Size = UDim2.new(1, 0, 1, 0)
@@ -438,16 +352,20 @@ function Linux:CreateWindow(title)
             label.BackgroundTransparency = 1
             label.Text = config.Title
             label.TextColor3 = Theme.Text
-            label.Font = Enum.Font.Gotham
+            label.Font = Enum.Font.SourceSansSemibold
             label.TextSize = 16
             label.TextXAlignment = Enum.TextXAlignment.Left
             label.Parent = toggle
 
             local switch = Instance.new("Frame")
             switch.Size = UDim2.new(0, 40, 0, 20)
-            switch.Position = UDim2.new(1, -50, 0, 10)
+            switch.Position = UDim2.new(1, -45, 0, 8)
             switch.BackgroundColor3 = config.Default and Theme.ToggleToggled or Theme.ToggleSlider
             switch.Parent = toggle
+
+            local switchCorner = Instance.new("UICorner")
+            switchCorner.CornerRadius = UDim.new(0, 10)
+            switchCorner.Parent = switch
 
             local knob = Instance.new("Frame")
             knob.Size = UDim2.new(0, 16, 0, 16)
@@ -455,29 +373,25 @@ function Linux:CreateWindow(title)
             knob.BackgroundColor3 = Theme.Text
             knob.Parent = switch
 
+            local knobCorner = Instance.new("UICorner")
+            knobCorner.CornerRadius = UDim.new(0, 8)
+            knobCorner.Parent = knob
+
             local value = config.Default or false
             local onChanged = config.OnChanged or function() end
 
             button.MouseButton1Click:Connect(function()
                 value = not value
-                TweenService:Create(switch, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundColor3 = value and Theme.ToggleToggled or Theme.ToggleSlider}):Play()
-                TweenService:Create(knob, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Position = value and UDim2.new(1, -18, 0, 2) or UDim2.new(0, 2, 0, 2)}):Play()
+                TweenService:Create(switch, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {BackgroundColor3 = value and Theme.ToggleToggled or Theme.ToggleSlider}):Play()
+                TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Position = value and UDim2.new(1, -18, 0, 2) or UDim2.new(0, 2, 0, 2)}):Play()
                 onChanged(value)
-            end)
-
-            button.MouseEnter:Connect(function()
-                TweenService:Create(toggle, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0.1}):Play()
-            end)
-
-            button.MouseLeave:Connect(function()
-                TweenService:Create(toggle, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
             end)
 
             return {
                 SetValue = function(newValue)
                     value = newValue
-                    TweenService:Create(switch, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {BackgroundColor3 = value and Theme.ToggleToggled or Theme.ToggleSlider}):Play()
-                    TweenService:Create(knob, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Position = value and UDim2.new(1, -18, 0, 2) or UDim2.new(0, 2, 0, 2)}):Play()
+                    TweenService:Create(switch, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {BackgroundColor3 = value and Theme.ToggleToggled or Theme.ToggleSlider}):Play()
+                    TweenService:Create(knob, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {Position = value and UDim2.new(1, -18, 0, 2) or UDim2.new(0, 2, 0, 2)}):Play()
                     onChanged(value)
                 end,
                 GetValue = function() return value end
@@ -486,75 +400,64 @@ function Linux:CreateWindow(title)
 
         function tab:AddSlider(id, config)
             local slider = Instance.new("Frame")
-            slider.Size = UDim2.new(1, -20, 0, 40)
-            slider.BackgroundColor3 = Theme.Element
+            slider.Size = UDim2.new(1, 0, 0, 50)
+            slider.BackgroundTransparency = 1
             slider.Parent = tabFrame
 
-            local sliderStroke = Instance.new("UIStroke")
-            sliderStroke.Thickness = 1
-            sliderStroke.Color = Theme.InElementBorder
-            sliderStroke.Transparency = 0.5
-            sliderStroke.Parent = slider
-
             local label = Instance.new("TextLabel")
-            label.Size = UDim2.new(1, -60, 0, 20)
-            label.Position = UDim2.new(0, 10, 0, 0)
+            label.Size = UDim2.new(1, -10, 0, 20)
+            label.Position = UDim2.new(0, 5, 0, 0)
             label.BackgroundTransparency = 1
             label.Text = config.Title .. ": " .. config.Default
             label.TextColor3 = Theme.Text
-            label.Font = Enum.Font.Gotham
+            label.Font = Enum.Font.SourceSansSemibold
             label.TextSize = 16
             label.TextXAlignment = Enum.TextXAlignment.Left
             label.Parent = slider
 
             local track = Instance.new("Frame")
-            track.Size = UDim2.new(1, -20, 0, 6)
-            track.Position = UDim2.new(0, 10, 1, -10)
+            track.Size = UDim2.new(1, -10, 0, 8)
+            track.Position = UDim2.new(0, 5, 0, 30)
             track.BackgroundColor3 = Theme.SliderRail
             track.Parent = slider
+
+            local trackCorner = Instance.new("UICorner")
+            trackCorner.CornerRadius = UDim.new(0, 4)
+            trackCorner.Parent = track
 
             local fill = Instance.new("Frame")
             fill.Size = UDim2.new((config.Default - config.Min) / (config.Max - config.Min), 0, 1, 0)
             fill.BackgroundColor3 = Theme.Accent
             fill.Parent = track
 
-            local fillGradient = Instance.new("UIGradient")
-            fillGradient.Color = ColorSequence.new(Theme.Accent, Theme.TabSelected)
-            fillGradient.Rotation = 45
-            fillGradient.Parent = fill
+            local fillCorner = Instance.new("UICorner")
+            fillCorner.CornerRadius = UDim.new(0, 4)
+            fillCorner.Parent = fill
 
             local value = config.Default or config.Min
             local onChanged = config.OnChanged or function() end
             local dragging = false
 
-            slider.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.Touch then
+            track.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                     dragging = true
                 end
             end)
 
-            slider.InputEnded:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.Touch then
+            UserInputService.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                     dragging = false
                 end
             end)
 
-            slider.InputChanged:Connect(function(input)
-                if dragging and input.UserInputType == Enum.UserInputType.Touch then
+            UserInputService.InputChanged:Connect(function(input)
+                if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
                     local relativeX = math.clamp((input.Position.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
                     value = math.floor(config.Min + (config.Max - config.Min) * relativeX / config.Rounding) * config.Rounding
                     fill.Size = UDim2.new(relativeX, 0, 1, 0)
                     label.Text = config.Title .. ": " .. value
                     onChanged(value)
                 end
-            end)
-
-            slider.MouseEnter:Connect(function()
-                TweenService:Create(slider, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0.1}):Play()
-            end)
-
-            slider.MouseLeave:Connect(function()
-                TweenService:Create(slider, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
             end)
 
             return {
@@ -570,15 +473,13 @@ function Linux:CreateWindow(title)
 
         function tab:AddInput(id, config)
             local input = Instance.new("Frame")
-            input.Size = UDim2.new(1, -20, 0, 40)
+            input.Size = UDim2.new(1, 0, 0, 36)
             input.BackgroundColor3 = Theme.Element
             input.Parent = tabFrame
 
-            local inputStroke = Instance.new("UIStroke")
-            inputStroke.Thickness = 1
-            inputStroke.Color = Theme.InElementBorder
-            inputStroke.Transparency = 0.5
-            inputStroke.Parent = input
+            local inputCorner = Instance.new("UICorner")
+            inputCorner.CornerRadius = UDim.new(0, 4)
+            inputCorner.Parent = input
 
             local label = Instance.new("TextLabel")
             label.Size = UDim2.new(0, 100, 1, 0)
@@ -586,48 +487,31 @@ function Linux:CreateWindow(title)
             label.BackgroundTransparency = 1
             label.Text = config.Title
             label.TextColor3 = Theme.Text
-            label.Font = Enum.Font.Gotham
+            label.Font = Enum.Font.SourceSansSemibold
             label.TextSize = 16
             label.TextXAlignment = Enum.TextXAlignment.Left
             label.Parent = input
 
             local textBox = Instance.new("TextBox")
-            textBox.Size = UDim2.new(1, -120, 0, 20)
-            textBox.Position = UDim2.new(0, 110, 0, 10)
+            textBox.Size = UDim2.new(1, -120, 0, 24)
+            textBox.Position = UDim2.new(0, 110, 0, 6)
             textBox.BackgroundColor3 = Theme.Input
             textBox.Text = config.Default or ""
             textBox.TextColor3 = Theme.Text
-            textBox.Font = Enum.Font.Gotham
+            textBox.Font = Enum.Font.SourceSans
             textBox.TextSize = 14
             textBox.TextTruncate = Enum.TextTruncate.AtEnd
             textBox.ClipsDescendants = true
             textBox.Parent = input
 
-            local textBoxStroke = Instance.new("UIStroke")
-            textBoxStroke.Thickness = 1
-            textBoxStroke.Color = Theme.InputIndicator
-            textBoxStroke.Transparency = 0.5
-            textBoxStroke.Parent = textBox
+            local textBoxCorner = Instance.new("UICorner")
+            textBoxCorner.CornerRadius = UDim.new(0, 4)
+            textBoxCorner.Parent = textBox
 
             local value = config.Default or ""
             local onChanged = config.OnChanged or function() end
 
-            textBox:GetPropertyChangedSignal("Text"):Connect(function()
-                local textSize = game:GetService("TextService"):GetTextSize(textBox.Text, textBox.TextSize, textBox.Font, Vector2.new(textBox.AbsoluteSize.X, 1000))
-                if textSize.X > textBox.AbsoluteSize.X then
-                    while textSize.X > textBox.AbsoluteSize.X and #textBox.Text > 0 do
-                        textBox.Text = textBox.Text:sub(1, -2)
-                        textSize = game:GetService("TextService"):GetTextSize(textBox.Text, textBox.TextSize, textBox.Font, Vector2.new(textBox.AbsoluteSize.X, 1000))
-                    end
-                end
-            end)
-
-            textBox.Focused:Connect(function()
-                TweenService:Create(textBox, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundColor3 = Theme.InputFocused}):Play()
-            end)
-
             textBox.FocusLost:Connect(function()
-                TweenService:Create(textBox, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundColor3 = Theme.Input}):Play()
                 if config.Numeric then
                     value = tonumber(textBox.Text) or value
                     textBox.Text = tostring(value)
@@ -637,26 +521,10 @@ function Linux:CreateWindow(title)
                 onChanged(value)
             end)
 
-            input.MouseEnter:Connect(function()
-                TweenService:Create(input, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0.1}):Play()
-            end)
-
-            input.MouseLeave:Connect(function()
-                TweenService:Create(input, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
-            end)
-
             return {
                 SetValue = function(newValue)
                     value = newValue
                     textBox.Text = tostring(value)
-                    local textSize = game:GetService("TextService"):GetTextSize(textBox.Text, textBox.TextSize, textBox.Font, Vector2.new(textBox.AbsoluteSize.X, 1000))
-                    if textSize.X > textBox.AbsoluteSize.X then
-                        while textSize.X > textBox.AbsoluteSize.X and #textBox.Text > 0 do
-                            textBox.Text = textBox.Text:sub(1, -2)
-                            textSize = game:GetService("TextService"):GetTextSize(textBox.Text, textBox.TextSize, textBox.Font, Vector2.new(textBox.AbsoluteSize.X, 1000))
-                        end
-                    end
-                    value = textBox.Text
                     onChanged(value)
                 end,
                 GetValue = function() return value end
