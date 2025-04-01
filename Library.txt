@@ -38,7 +38,7 @@ local Theme = {
     SubText = Color3.fromRGB(150, 150, 150)
 }
 
-function Linux:CreateWindow(title, subtitle)
+function Linux:CreateWindow(title)
     local window = {}
     local mainFrame = Instance.new("Frame")
     mainFrame.Size = UDim2.new(0, 580, 0, 360)
@@ -63,7 +63,7 @@ function Linux:CreateWindow(title, subtitle)
     titleBar.Parent = mainFrame
 
     local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(0, 0, 1, 0)
+    titleLabel.Size = UDim2.new(1, -30, 1, 0)
     titleLabel.Position = UDim2.new(0, 5, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Text = title
@@ -72,24 +72,6 @@ function Linux:CreateWindow(title, subtitle)
     titleLabel.TextSize = 18
     titleLabel.TextXAlignment = Enum.TextXAlignment.Left
     titleLabel.Parent = titleBar
-    titleLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
-        titleLabel.Size = UDim2.new(0, titleLabel.TextBounds.X, 1, 0)
-    end)
-
-    local subtitleLabel = Instance.new("TextLabel")
-    subtitleLabel.Size = UDim2.new(0, 0, 1, 0)
-    subtitleLabel.Position = UDim2.new(0, titleLabel.Size.X.Offset + 10, 0, 0)
-    subtitleLabel.BackgroundTransparency = 1
-    subtitleLabel.Text = subtitle
-    subtitleLabel.TextColor3 = Color3.fromRGB(100, 100, 100)
-    subtitleLabel.Font = Enum.Font.GothamBold
-    subtitleLabel.TextSize = 18
-    subtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    subtitleLabel.Parent = titleBar
-    subtitleLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
-        subtitleLabel.Size = UDim2.new(0, subtitleLabel.TextBounds.X, 1, 0)
-        subtitleLabel.Position = UDim2.new(0, titleLabel.Size.X.Offset + 10, 0, 0)
-    end)
 
     local closeButton = Instance.new("TextButton")
     closeButton.Size = UDim2.new(0, 20, 0, 20)
@@ -264,7 +246,7 @@ function Linux:CreateWindow(title, subtitle)
             arrow.Size = UDim2.new(0, 20, 0, 20)
             arrow.Position = UDim2.new(1, -30, 0, 10)
             arrow.BackgroundTransparency = 1
-            arrow.Image = "rbxassetid://10709790948" -- lucide-chevron-down
+            arrow.Image = "rbxassetid://10709790948"
             arrow.ImageColor3 = Theme.SubText
             arrow.Parent = dropdown
 
@@ -318,10 +300,10 @@ function Linux:CreateWindow(title, subtitle)
                 if isOpen then
                     dropdownFrame.Visible = true
                     TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, #values * 27)}):Play()
-                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709791523"}):Play() -- lucide-chevron-up
+                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709791523"}):Play()
                 else
                     TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)}):Play()
-                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play() -- lucide-chevron-down
+                    TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play()
                     task.delay(0.3, function() dropdownFrame.Visible = false end)
                 end
             end)
