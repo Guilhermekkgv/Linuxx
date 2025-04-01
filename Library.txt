@@ -13,12 +13,12 @@ local Linux = {
     Flags = {},
     Themes = {
         Default = {
-            Main = Color3.fromRGB(20, 20, 20), -- Fundo mais escuro
-            Second = Color3.fromRGB(28, 28, 28), -- Containers mais escuros
-            Stroke = Color3.fromRGB(50, 50, 50),
-            Divider = Color3.fromRGB(50, 50, 50),
-            Text = Color3.fromRGB(255, 255, 255),
-            TextDark = Color3.fromRGB(255, 255, 255)
+            Main = Color3.fromRGB(255, 192, 203), -- Rosa claro (fundo)
+            Second = Color3.fromRGB(255, 182, 193), -- Rosa um pouco mais escuro (containers)
+            Stroke = Color3.fromRGB(255, 105, 180), -- Rosa mais forte (bordas)
+            Divider = Color3.fromRGB(255, 105, 180), -- Rosa mais forte (divisores)
+            Text = Color3.fromRGB(255, 255, 255), -- Texto branco
+            TextDark = Color3.fromRGB(255, 255, 255) -- Texto branco escuro
         }
     },
     SelectedTheme = "Default",
@@ -158,7 +158,7 @@ local function SaveCfg(Name)
 end
 
 CreateElement("Corner", function(Scale, Offset)
-    return Create("UICorner", {CornerRadius = UDim.new(Scale or 0, Offset or 4)}) -- Arredondamento reduzido
+    return Create("UICorner", {CornerRadius = UDim.new(Scale or 0, 4)})
 end)
 
 CreateElement("Stroke", function(Color, Thickness)
@@ -187,8 +187,8 @@ CreateElement("Frame", function(Color)
 end)
 
 CreateElement("RoundFrame", function(Color, Scale, Offset)
-    return Create("Frame", {BackgroundColor3 = Color or Color3.fromRGB(255, 255, 255), BorderSizePixel = 0}, {
-        Create("UICorner", {CornerRadius = UDim.new(Scale or 0, Offset or 4)}) -- Arredondamento reduzido
+    return Create("Frame", {BackgroundColor3 = Color or Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, BackgroundTransparency = 0.3}, { -- Transparência leve
+        Create("UICorner", {CornerRadius = UDim.new(Scale or 0, Offset or 4)})
     })
 end)
 
@@ -199,7 +199,7 @@ end)
 CreateElement("ScrollFrame", function(Color, Width)
     return Create("ScrollingFrame", {
         BackgroundTransparency = 1,
-        ScrollBarThickness = 0, -- Remove barra de rolagem
+        ScrollBarThickness = 0,
         CanvasSize = UDim2.new(0, 0, 0, 0)
     })
 end)
@@ -237,14 +237,14 @@ function Linux:MakeNotification(NotificationConfig)
             Parent = NotificationHolder
         })
 
-        local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(20, 20, 20), 0, 4), {
+        local NotificationFrame = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 192, 203), 0, 4), {
             Parent = NotificationParent,
             Size = UDim2.new(1, 0, 0, 0),
             Position = UDim2.new(1, -55, 0, 0),
-            BackgroundTransparency = 0,
+            BackgroundTransparency = 0.3,
             AutomaticSize = Enum.AutomaticSize.Y
         }), {
-            MakeElement("Stroke", Color3.fromRGB(50, 50, 50), 1.2),
+            MakeElement("Stroke", Color3.fromRGB(255, 105, 180), 1.2),
             MakeElement("Padding", 12, 12, 12, 12),
             SetProps(MakeElement("Image", NotificationConfig.Image), {
                 Size = UDim2.new(0, 20, 0, 20),
@@ -322,7 +322,8 @@ function Linux:MakeWindow(WindowConfig)
     end
 
     local TabHolder = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame"), {
-        Size = UDim2.new(1, 0, 1, 0)
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 0.3
     }), {
         MakeElement("List"),
         MakeElement("Padding", 8, 0, 0, 8)
@@ -354,7 +355,7 @@ function Linux:MakeWindow(WindowConfig)
         Position = UDim2.new(0, 25, 0, -24)
     }), "Text")
 
-    local MainWindow = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(20, 20, 20), 0, 4), {
+    local MainWindow = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 192, 203), 0, 4), {
         Parent = ScreenGui,
         Position = UDim2.new(0.5, -307, 0.5, -172),
         Size = UDim2.new(0, 615, 0, 344),
@@ -367,17 +368,19 @@ function Linux:MakeWindow(WindowConfig)
             Name = "TopBar"
         }), {
             WindowName,
-            AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+            AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                 Size = UDim2.new(0, 30, 0, 30),
-                Position = UDim2.new(1, -40, 0, 10)
+                Position = UDim2.new(1, -40, 0, 10),
+                BackgroundTransparency = 0.3
             }), {
                 AddThemeObject(MakeElement("Stroke"), "Stroke"),
                 CloseBtn
             }), "Second"),
         }),
-        AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+        AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
             Size = UDim2.new(0, 150, 1, 0),
-            Position = UDim2.new(0, 0, 0, 50)
+            Position = UDim2.new(0, 0, 0, 50),
+            BackgroundTransparency = 0.3
         }), {
             TabHolder
         }), "Second")
@@ -415,7 +418,8 @@ function Linux:MakeWindow(WindowConfig)
         local TabFrame = SetChildren(SetProps(MakeElement("Button"), {
             Size = UDim2.new(1, 0, 0, 30),
             Parent = TabHolder,
-            BackgroundTransparency = 1
+            BackgroundTransparency = 1,
+            BackgroundColor3 = Color3.fromRGB(255, 182, 193) -- Fundo rosa pras abas
         }), {
             AddThemeObject(SetProps(MakeElement("Image", TabConfig.Icon), {
                 AnchorPoint = Vector2.new(0, 0.5),
@@ -448,7 +452,8 @@ function Linux:MakeWindow(WindowConfig)
             Position = UDim2.new(0, 150, 0, 50),
             Parent = MainWindow,
             Visible = false,
-            Name = "ItemContainer"
+            Name = "ItemContainer",
+            BackgroundTransparency = 0.3
         }), {
             MakeElement("List", 0, 6),
             MakeElement("Padding", 15, 10, 10, 15)
@@ -496,9 +501,10 @@ function Linux:MakeWindow(WindowConfig)
                 local Button = {}
                 local Click = SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0)})
 
-                local ButtonFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+                local ButtonFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                     Size = UDim2.new(1, 0, 0, 33),
-                    Parent = ItemParent
+                    Parent = ItemParent,
+                    BackgroundTransparency = 0.3
                 }), {
                     AddThemeObject(SetProps(Create("TextLabel", {
                         Text = ButtonConfig.Name,
@@ -521,20 +527,20 @@ function Linux:MakeWindow(WindowConfig)
                 }), "Second")
 
                 AddConnection(Click.MouseEnter, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(33, 33, 33)}):Play()
+                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.2}):Play()
                 end)
 
                 AddConnection(Click.MouseLeave, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(28, 28, 28)}):Play()
+                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.3}):Play()
                 end)
 
                 AddConnection(Click.MouseButton1Up, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(33, 33, 33)}):Play()
+                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.2}):Play()
                     task.spawn(ButtonConfig.Callback)
                 end)
 
                 AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(38, 38, 38)}):Play()
+                    TweenService:Create(ButtonFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.1}):Play()
                 end)
 
                 function Button:Set(ButtonText)
@@ -547,31 +553,35 @@ function Linux:MakeWindow(WindowConfig)
                 ToggleConfig.Name = ToggleConfig.Name or "Toggle"
                 ToggleConfig.Default = ToggleConfig.Default or false
                 ToggleConfig.Callback = ToggleConfig.Callback or function() end
-                ToggleConfig.Color = Color3.fromRGB(128, 0, 128) -- Roxo
+                ToggleConfig.Color = Color3.fromRGB(255, 105, 180) -- Rosa forte
                 ToggleConfig.Flag = ToggleConfig.Flag or nil
                 ToggleConfig.Save = ToggleConfig.Save or false
 
                 local Toggle = {Value = ToggleConfig.Default, Save = ToggleConfig.Save}
                 local Click = SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0)})
 
-                local ToggleBox = SetChildren(SetProps(MakeElement("RoundFrame", ToggleConfig.Color, 0, 4), {
-                    Size = UDim2.new(0, 24, 0, 24),
-                    Position = UDim2.new(1, -24, 0.5, 0),
-                    AnchorPoint = Vector2.new(0.5, 0.5)
+                local ToggleBox = SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 105, 180), 0, 4), {
+                    Size = UDim2.new(0, 40, 0, 20),
+                    Position = UDim2.new(1, -40, 0.5, 0),
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    BackgroundTransparency = 0.3
                 }), {
-                    SetProps(MakeElement("Stroke"), {Color = ToggleConfig.Color, Name = "Stroke", Transparency = 0.5}),
-                    SetProps(MakeElement("Image", "rbxassetid://3944680095"), {
-                        Size = UDim2.new(0, 20, 0, 20),
-                        AnchorPoint = Vector2.new(0.5, 0.5),
-                        Position = UDim2.new(0.5, 0, 0.5, 0),
-                        ImageColor3 = Color3.fromRGB(255, 255, 255),
-                        Name = "Ico"
+                    AddThemeObject(MakeElement("Stroke"), "Stroke"),
+                    SetProps(MakeElement("Frame", Color3.fromRGB(255, 255, 255)), {
+                        Size = UDim2.new(0, 16, 0, 16),
+                        Position = UDim2.new(0, 2, 0.5, 0),
+                        AnchorPoint = Vector2.new(0, 0.5),
+                        BackgroundTransparency = 0.3,
+                        Name = "Knob"
+                    }, {
+                        MakeElement("Corner", 1)
                     })
                 })
 
-                local ToggleFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+                local ToggleFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                     Size = UDim2.new(1, 0, 0, 38),
-                    Parent = ItemParent
+                    Parent = ItemParent,
+                    BackgroundTransparency = 0.3
                 }), {
                     AddThemeObject(SetProps(Create("TextLabel", {
                         Text = ToggleConfig.Name,
@@ -592,30 +602,33 @@ function Linux:MakeWindow(WindowConfig)
 
                 function Toggle:Set(Value)
                     Toggle.Value = Value
-                    TweenService:Create(ToggleBox, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundColor3 = Toggle.Value and ToggleConfig.Color or Linux.Themes[Linux.SelectedTheme].Divider}):Play()
-                    TweenService:Create(ToggleBox.Stroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Color = Toggle.Value and ToggleConfig.Color or Linux.Themes[Linux.SelectedTheme].Stroke}):Play()
-                    TweenService:Create(ToggleBox.Ico, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = Toggle.Value and 0 or 1, Size = Toggle.Value and UDim2.new(0, 20, 0, 20) or UDim2.new(0, 8, 0, 8)}):Play()
+                    TweenService:Create(ToggleBox.Knob, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {
+                        Position = Toggle.Value and UDim2.new(1, -18, 0.5, 0) or UDim2.new(0, 2, 0.5, 0)
+                    }):Play()
+                    TweenService:Create(ToggleBox, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {
+                        BackgroundTransparency = Toggle.Value and 0.2 or 0.3
+                    }):Play()
                     ToggleConfig.Callback(Toggle.Value)
                 end
 
                 Toggle:Set(Toggle.Value)
 
                 AddConnection(Click.MouseEnter, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(33, 33, 33)}):Play()
+                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.2}):Play()
                 end)
 
                 AddConnection(Click.MouseLeave, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(28, 28, 28)}):Play()
+                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.3}):Play()
                 end)
 
                 AddConnection(Click.MouseButton1Up, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(33, 33, 33)}):Play()
+                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.2}):Play()
                     SaveCfg(game.GameId)
                     Toggle:Set(not Toggle.Value)
                 end)
 
                 AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(38, 38, 38)}):Play()
+                    TweenService:Create(ToggleFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.1}):Play()
                 end)
 
                 if ToggleConfig.Flag then
@@ -632,7 +645,7 @@ function Linux:MakeWindow(WindowConfig)
                 SliderConfig.Default = SliderConfig.Default or 50
                 SliderConfig.Callback = SliderConfig.Callback or function() end
                 SliderConfig.ValueName = SliderConfig.ValueName or ""
-                SliderConfig.Color = Color3.fromRGB(128, 0, 128) -- Roxo
+                SliderConfig.Color = Color3.fromRGB(255, 105, 180) -- Rosa forte
                 SliderConfig.Flag = SliderConfig.Flag or nil
                 SliderConfig.Save = SliderConfig.Save or false
 
@@ -661,7 +674,7 @@ function Linux:MakeWindow(WindowConfig)
                 local SliderBar = SetChildren(SetProps(MakeElement("RoundFrame", SliderConfig.Color, 0, 4), {
                     Size = UDim2.new(1, -24, 0, 26),
                     Position = UDim2.new(0, 12, 0, 30),
-                    BackgroundTransparency = 0.9
+                    BackgroundTransparency = 0.3
                 }), {
                     SetProps(MakeElement("Stroke"), {Color = SliderConfig.Color}),
                     AddThemeObject(SetProps(Create("TextLabel", {
@@ -680,9 +693,10 @@ function Linux:MakeWindow(WindowConfig)
                     SliderDrag
                 })
 
-                local SliderFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+                local SliderFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                     Size = UDim2.new(1, 0, 0, 65),
-                    Parent = ItemParent
+                    Parent = ItemParent,
+                    BackgroundTransparency = 0.3
                 }), {
                     AddThemeObject(SetProps(Create("TextLabel", {
                         Text = SliderConfig.Name,
@@ -757,15 +771,17 @@ function Linux:MakeWindow(WindowConfig)
                     Parent = ItemParent,
                     Position = UDim2.new(0, 0, 0, 38),
                     Size = UDim2.new(1, 0, 1, -38),
-                    ClipsDescendants = true
+                    ClipsDescendants = true,
+                    BackgroundTransparency = 0.3
                 }), "Divider")
 
                 local Click = SetProps(MakeElement("Button"), {Size = UDim2.new(1, 0, 1, 0)})
 
-                local DropdownFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+                local DropdownFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                     Size = UDim2.new(1, 0, 0, 38),
                     Parent = ItemParent,
-                    ClipsDescendants = true
+                    ClipsDescendants = true,
+                    BackgroundTransparency = 0.3
                 }), {
                     DropdownContainer,
                     SetProps(SetChildren(MakeElement("TFrame"), {
@@ -821,7 +837,7 @@ function Linux:MakeWindow(WindowConfig)
 
                 local function AddOptions(Options)
                     for _, Option in pairs(Options) do
-                        local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(28, 28, 28)), {
+                        local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(255, 182, 193)), {
                             MakeElement("Corner", 0, 4),
                             AddThemeObject(SetProps(Create("TextLabel", {
                                 Text = Option,
@@ -839,7 +855,7 @@ function Linux:MakeWindow(WindowConfig)
                         }), {
                             Parent = DropdownContainer,
                             Size = UDim2.new(1, 0, 0, 28),
-                            BackgroundTransparency = 1,
+                            BackgroundTransparency = 0.3,
                             ClipsDescendants = true
                         }), "Divider")
 
@@ -869,7 +885,7 @@ function Linux:MakeWindow(WindowConfig)
                         Dropdown.Value = "..."
                         DropdownFrame.F.Selected.Text = Dropdown.Value
                         for _, v in pairs(Dropdown.Buttons) do
-                            TweenService:Create(v, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundTransparency = 1}):Play()
+                            TweenService:Create(v, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundTransparency = 0.3}):Play()
                             TweenService:Create(v.Title, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {TextTransparency = 0.4}):Play()
                         end
                         return
@@ -879,10 +895,10 @@ function Linux:MakeWindow(WindowConfig)
                     DropdownFrame.F.Selected.Text = Dropdown.Value
 
                     for _, v in pairs(Dropdown.Buttons) do
-                        TweenService:Create(v, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundTransparency = 1}):Play()
+                        TweenService:Create(v, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundTransparency = 0.3}):Play()
                         TweenService:Create(v.Title, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {TextTransparency = 0.4}):Play()
                     end
-                    TweenService:Create(Dropdown.Buttons[Value], TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundTransparency = 0}):Play()
+                    TweenService:Create(Dropdown.Buttons[Value], TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundTransparency = 0.2}):Play()
                     TweenService:Create(Dropdown.Buttons[Value].Title, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
                     DropdownConfig.Callback(Dropdown.Value)
                 end
@@ -926,18 +942,20 @@ function Linux:MakeWindow(WindowConfig)
                     ClearTextOnFocus = false
                 }), "Text")
 
-                local TextContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+                local TextContainer = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                     Size = UDim2.new(0, 24, 0, 24),
                     Position = UDim2.new(1, -12, 0.5, 0),
-                    AnchorPoint = Vector2.new(1, 0.5)
+                    AnchorPoint = Vector2.new(1, 0.5),
+                    BackgroundTransparency = 0.3
                 }), {
                     AddThemeObject(MakeElement("Stroke"), "Stroke"),
                     TextboxActual
                 }), "Main")
 
-                local TextboxFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(28, 28, 28), 0, 4), {
+                local TextboxFrame = AddThemeObject(SetChildren(SetProps(MakeElement("RoundFrame", Color3.fromRGB(255, 182, 193), 0, 4), {
                     Size = UDim2.new(1, 0, 0, 38),
-                    Parent = ItemParent
+                    Parent = ItemParent,
+                    BackgroundTransparency = 0.3
                 }), {
                     AddThemeObject(SetProps(Create("TextLabel", {
                         Text = TextboxConfig.Name,
@@ -970,20 +988,20 @@ function Linux:MakeWindow(WindowConfig)
                 TextboxActual.Text = TextboxConfig.Default
 
                 AddConnection(Click.MouseEnter, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(33, 33, 33)}):Play()
+                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.2}):Play()
                 end)
 
                 AddConnection(Click.MouseLeave, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(28, 28, 28)}):Play()
+                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.3}):Play()
                 end)
 
                 AddConnection(Click.MouseButton1Up, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(33, 33, 33)}):Play()
+                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.2}):Play()
                     TextboxActual:CaptureFocus()
                 end)
 
                 AddConnection(Click.MouseButton1Down, function()
-                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(38, 38, 38)}):Play()
+                    TweenService:Create(TextboxFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {BackgroundTransparency = 0.1}):Play()
                 end)
             end
             return ElementFunction
