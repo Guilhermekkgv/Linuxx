@@ -195,7 +195,7 @@ function Linux:CreateWindow(title)
             tabGradient.Enabled = true
             currentTab = tabFrame
             tabTitleLabel.Text = tabName
-            tabContent.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 30)
+            tabContent.CanvasSize = UDIM2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 30)
             TweenService:Create(tabButton, TweenInfo.new(0.2, Enum.EasingStyle.Sine), {BackgroundTransparency = 0}):Play()
         end)
 
@@ -322,7 +322,7 @@ function Linux:CreateWindow(title)
 
             local dropdownFrame = Instance.new("Frame")
             dropdownFrame.Size = UDim2.new(1, -20, 0, 0)
-            dropdownFrame.Position = UDim2.new(0, 10, 1, 5)
+            dropdownFrame.Position = UDim2.new(0, 10, 1, 0)
             dropdownFrame.BackgroundColor3 = Theme.DropdownComponent
             dropdownFrame.ClipsDescendants = true
             dropdownFrame.Visible = false
@@ -361,9 +361,12 @@ function Linux:CreateWindow(title)
                         selectedValue = value
                         label.Text = config.Title .. ": " .. value
                         isOpen = false
-                        TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)}):Play()
+                        local tweenClose = TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)})
+                        tweenClose:Play()
                         TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play()
-                        task.delay(0.3, function() dropdownFrame.Visible = false end)
+                        tweenClose.Completed:Connect(function()
+                            dropdownFrame.Visible = false
+                        end)
                         onChanged(value)
                     end)
                 end
@@ -378,9 +381,12 @@ function Linux:CreateWindow(title)
                     TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, #values * 27)}):Play()
                     TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709791523"}):Play()
                 else
-                    TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)}):Play()
+                    local tweenClose = TweenService:Create(dropdownFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Size = UDim2.new(1, -20, 0, 0)})
+                    tweenClose:Play()
                     TweenService:Create(arrow, TweenInfo.new(0.3, Enum.EasingStyle.Quad), {Rotation = 0, Image = "rbxassetid://10709790948"}):Play()
-                    task.delay(0.3, function() dropdownFrame.Visible = false end)
+                    tweenClose.Completed:Connect(function()
+                        dropdownFrame.Visible = false
+                    end)
                 end
             end)
 
